@@ -2,3 +2,7 @@
 *.iml
 # Project exclude paths
 /node_modules/
+authorized_key.json
+dist
+.serverless
+.env

@@ -1,0 +1,23 @@
+CREATE TABLE data
+(
+    comment Utf8,
+    row_id Utf8 NOT NULL,
+    address Utf8,
+    day_start Utf8,
+    time_start Utf8,
+    day_end Utf8,
+    time_end Utf8,
+    PRIMARY KEY (row_id)
+);
+
+CREATE TABLE chats
+(
+    chat_id Utf8,
+    filter Utf8,
+    enabled Int32,
+    name Utf8,
+    from_name Utf8,
+    from_id Utf8,
+    message_thread_id Utf8,
+    PRIMARY KEY (chat_id)
+);

@@ -1,4 +1,4 @@
-service: templates\nodejs
+service: website-checker-bot-yc
 frameworkVersion: "3"
 
 provider:
@@ -19,34 +19,40 @@ package:
     - dist/*.js
 
 functions:
-  simple:
-    handler: dist/index.hello
+  web:
+    handler: dist/index.web
     memorySize: 128
     timeout: '5'
-    account: function-sa
+    account: website-checker-bot-yc-sa
+    environment:
+      ENDPOINT: ${lockbox:e6qtpi769u9fdrcr8c2t/ENDPOINT}
+      DATABASE: ${lockbox:e6qtpi769u9fdrcr8c2t/DATABASE}
+      BOT_KEY: ${lockbox:e6qtpi769u9fdrcr8c2t/BOT_KEY}
     events:
       - http:
           method: post
-          path: /post/just/to/this/path
+          path: /
 
   timer:
-    handler: dist/index.hello
+    handler: dist/index.timer
     memorySize: 128
-    timeout: '5'
+    timeout: '30'
+    account: website-checker-bot-yc-sa
+    environment:
+      ENDPOINT: ${lockbox:e6qtpi769u9fdrcr8c2t/ENDPOINT}
+      DATABASE: ${lockbox:e6qtpi769u9fdrcr8c2t/DATABASE}
+      BOT_KEY: ${lockbox:e6qtpi769u9fdrcr8c2t/BOT_KEY}
     events:
       - cron:
-          expression: "* * * * ? *"
-          account: trigger-sa
-          retry:
-            attempts: 1
-            interval: 10
+          expression: "0 * * * ? *"
+          account: website-checker-bot-yc-sa
+
+
 
 resources:
-  trigger-sa:
+  website-checker-bot-yc-sa:
     type: yc::ServiceAccount
     roles:
       - serverless.functions.invoker
-  function-sa:
-    type: yc::ServiceAccount
-    roles:
-      - editor
+      - ydb.editor
+
